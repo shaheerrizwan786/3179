@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NSW vs VIC: Who is the Richest? - Shaheer Rizwan (33140456)</title>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/2.0.6/pure-min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #555;
+            margin-bottom: 40px;
+        }
+
+        .graph-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .chart {
+            width: 45%;
+            margin: 20px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>NSW vs VIC: Who is the Richest?</h1>
+    <h2 class="subtitle">Shaheer Rizwan (33140456)</h2>
+
+    <div class="graph-container">
+        <!-- Bar Chart: Median Rent vs Average Salary -->
+        <div class="chart">
+            <h2>Comparison of Median Net Rent vs Average Salary for Richest Postcodes</h2>
+            <div id="bar_chart"></div>
+        </div>
+
+        <!-- Scatter Plot: Taxable Income vs Tax Paid -->
+        <div class="chart">
+            <h2>Scatter Plot: Average Taxable Income vs Net Tax Paid</h2>
+            <div id="scatter_plot"></div>
+        </div>
+
+        <!-- Maps: NSW vs VIC Comparison -->
+        <div class="chart">
+            <h2>NSW vs VIC Wealth Distribution Maps</h2>
+            <div id="map_comparison"></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Shaheer Rizwan - Student ID: 33140456</p>
+    </footer>
+
+    <script type="text/javascript">
+        // Embedding Bar Chart
+        vegaEmbed('#bar_chart', 'path-to-your-bar-chart-json-file.json').catch(console.error);
+
+        // Embedding Scatter Plot
+        vegaEmbed('#scatter_plot', 'path-to-your-scatter-plot-json-file.json').catch(console.error);
+
+        // Embedding Maps (NSW vs VIC)
+        vegaEmbed('#map_comparison', 'path-to-your-map-comparison-json-file.json').catch(console.error);
+    </script>
+
+</body>
+</html>
