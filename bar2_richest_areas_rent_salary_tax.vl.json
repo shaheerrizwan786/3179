@@ -1,0 +1,82 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 900,
+  "height": 400,
+  "data": {
+    "url": "https://raw.githubusercontent.com/shaheerrizwan786/3179/refs/heads/main/ts22datacleaned.csv",
+    "format": {"type": "csv"}
+  },
+  "transform": [
+    {
+      "filter": "datum.Postcode == 2028 || datum.Postcode == 2027 || datum.Postcode == 3142 || datum.Postcode == 3944 || datum.Postcode == 2024 || datum.Postcode == 3002 || datum.Postcode == 3186 || datum.Postcode == 2088"
+    },
+    {
+      "calculate": "datum['Average salary or wages'] / 52",
+      "as": "Weekly Average Salary"
+    },
+    {
+      "calculate": "datum['Average net tax'] / 52",
+      "as": "Weekly Average Net Tax"
+    },
+    {
+      "fold": [
+        "Weekly Average Salary",
+        "Weekly Average Net Tax",
+        "Median net rent"
+      ],
+      "as": ["Metric", "Value"]
+    }
+  ],
+  "mark": "bar",
+  "encoding": {
+    "x": {
+      "field": "Postcode",
+      "type": "nominal",
+      "axis": {
+        "title": "Postcode",
+        "labelAngle": 0,
+        "labelFontSize": 12,
+        "titleFontSize": 14
+      }
+    },
+    "xOffset": {"field": "Metric"},
+    "y": {
+      "field": "Value",
+      "type": "quantitative",
+      "axis": {
+        "title": "Weekly Value",
+        "labelFontSize": 12,
+        "titleFontSize": 14
+      }
+    },
+    "color": {
+      "field": "Metric",
+      "type": "nominal",
+      "scale": {"range": ["#4CAF50", "#FF5722", "#FFEB3B"]},
+      "legend": {"title": "Metric"}
+    },
+    "tooltip": [
+      {"field": "Postcode", "title": "Postcode"},
+      {
+        "field": "Weekly Average Salary",
+        "title": "Weekly Salary ($)",
+        "format": ".2f"
+      },
+      {
+        "field": "Weekly Average Net Tax",
+        "title": "Weekly Tax ($)",
+        "format": ".2f"
+      },
+      {"field": "Median net rent", "title": "Weekly Rent ($)", "format": ".2f"}
+    ]
+  },
+  "title": {
+    "text": "Comparison of Weekly Salary, Net Tax, and Rent for Richest Postcodes",
+    "fontSize": 15,
+    "anchor": "start"
+  },
+  "config": {
+    "axisX": {"labelFontSize": 12, "titleFontSize": 14},
+    "axisY": {"labelFontSize": 12, "titleFontSize": 14}
+  }
+}
