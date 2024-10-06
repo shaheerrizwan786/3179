@@ -1,21 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NSW vs VIC: Who is the Richest? - Shaheer Rizwan (33140456)</title>
+
+    <!-- Import Vega & Vega-Lite -->
     <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/2.0.6/pure-min.css">
+
+    <!-- Import PureCSS for lightweight styling -->
+    <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/pure-min.css" integrity="sha384-cg6SkqEOCV1NbJoCu11+bm0NvBRc8IYLRGXkmNrqUBfTjmMYwNKPWBTIKyw9mHNJ" crossorigin="anonymous">
+
+    <!-- Custom styles -->
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Source Sans Pro', Arial, sans-serif;
             padding: 20px;
             background-color: #f4f4f4;
         }
 
-        h1, h2 {
+        h1 {
             text-align: center;
             color: #333;
         }
@@ -26,15 +33,8 @@
             margin-bottom: 40px;
         }
 
-        .graph-container {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-        }
-
-        .chart {
-            width: 45%;
-            margin: 20px;
+        .pure-g {
+            margin: 30px 0;
         }
 
         footer {
@@ -42,30 +42,40 @@
             margin-top: 50px;
             color: #777;
         }
+
+        .vis-container {
+            margin: 0 auto;
+            max-width: 90%;
+        }
     </style>
 </head>
+
 <body>
 
     <h1>NSW vs VIC: Who is the Richest?</h1>
     <h2 class="subtitle">Shaheer Rizwan (33140456)</h2>
 
-    <div class="graph-container">
-        <!-- Bar Chart: Median Rent vs Average Salary -->
-        <div class="chart">
+    <!-- First Visualisation: Richest Postcodes (Bar Chart) -->
+    <div class="pure-g">
+        <div class="pure-u-1-1">
             <h2>Comparison of Median Net Rent vs Average Salary for Richest Postcodes</h2>
-            <div id="bar_chart"></div>
+            <div id="vis1" class="vis-container"></div>
         </div>
+    </div>
 
-        <!-- Scatter Plot: Taxable Income vs Tax Paid -->
-        <div class="chart">
+    <!-- Second Visualisation: Scatter Plot -->
+    <div class="pure-g">
+        <div class="pure-u-1-1">
             <h2>Scatter Plot: Average Taxable Income vs Net Tax Paid</h2>
-            <div id="scatter_plot"></div>
+            <div id="vis2" class="vis-container"></div>
         </div>
+    </div>
 
-        <!-- Maps: NSW vs VIC Comparison -->
-        <div class="chart">
+    <!-- Third Visualisation: Map Comparison (NSW vs VIC) -->
+    <div class="pure-g">
+        <div class="pure-u-1-1">
             <h2>NSW vs VIC Wealth Distribution Maps</h2>
-            <div id="map_comparison"></div>
+            <div id="vis3" class="vis-container"></div>
         </div>
     </div>
 
@@ -73,16 +83,18 @@
         <p>&copy; 2024 Shaheer Rizwan - Student ID: 33140456</p>
     </footer>
 
+    <!-- Vega-Lite Embeds -->
     <script type="text/javascript">
-        // Embedding Bar Chart
-        vegaEmbed('#bar_chart', 'path-to-your-bar-chart-json-file.json').catch(console.error);
+        // Embed Bar Chart (Richest Postcodes)
+        vegaEmbed('#vis1', 'bar2_richest_areas_rent_salary_tax.vl.json').catch(console.error);
 
-        // Embedding Scatter Plot
-        vegaEmbed('#scatter_plot', 'path-to-your-scatter-plot-json-file.json').catch(console.error);
+        // Embed Scatter Plot
+        vegaEmbed('#vis2', 'scatter_avincome_nettax.vl.json').catch(console.error);
 
-        // Embedding Maps (NSW vs VIC)
-        vegaEmbed('#map_comparison', 'path-to-your-map-comparison-json-file.json').catch(console.error);
+        // Embed Map Comparison (NSW vs VIC)
+        vegaEmbed('#vis3', 'map_vic_vs_nsw.vl.json').catch(console.error);
     </script>
 
 </body>
+
 </html>
