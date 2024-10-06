@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NSW vs VIC: Who is the Richest? - Shaheer Rizwan (33140456)</title>
+    <title>Assignment 2 FIT3179: VIC vs NSW - Shaheer Rizwan (33140456)</title>
 
     <!-- Import Vega & Vega-Lite -->
     <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
@@ -14,17 +14,28 @@
     <!-- Import PureCSS for lightweight styling -->
     <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/pure-min.css" integrity="sha384-cg6SkqEOCV1NbJoCu11+bm0NvBRc8IYLRGXkmNrqUBfTjmMYwNKPWBTIKyw9mHNJ" crossorigin="anonymous">
 
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+
     <!-- Custom styles -->
     <style>
         body {
-            font-family: 'Source Sans Pro', Arial, sans-serif;
+            font-family: 'Montserrat', Arial, sans-serif;
             padding: 20px;
             background-color: #f4f4f4;
+            color: #333;
         }
 
         h1 {
             text-align: center;
-            color: #333;
+            color: #222;
+            font-size: 2.5rem;
+        }
+
+        h2 {
+            font-size: 1.75rem;
+            color: #555;
+            text-align: center;
         }
 
         .subtitle {
@@ -37,15 +48,38 @@
             margin: 30px 0;
         }
 
+        .vis-container {
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 95%;
+        }
+
+        /* Layout for side-by-side graphs */
+        .visualizations-side-by-side {
+            display: flex;
+            justify-content: center;
+        }
+
+        .visualizations-side-by-side .vis-container {
+            width: 48%;
+        }
+
+        .centered {
+            text-align: center;
+        }
+
         footer {
             text-align: center;
             margin-top: 50px;
             color: #777;
         }
 
-        .vis-container {
-            margin: 0 auto;
-            max-width: 90%;
+        .highlight {
+            color: #ff7043;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -55,44 +89,52 @@
     <h1>NSW vs VIC: Who is the Richest?</h1>
     <h2 class="subtitle">Shaheer Rizwan (33140456)</h2>
 
-    <!-- First Visualisation: Richest Postcodes (Bar Chart) -->
-    <div class="pure-g">
-        <div class="pure-u-1-1">
-            <h2>Comparison of Median Net Rent vs Average Salary for Richest Postcodes</h2>
-            <div id="vis1" class="vis-container"></div>
-        </div>
-    </div>
-
-    <!-- Second Visualisation: Scatter Plot -->
-    <div class="pure-g">
-        <div class="pure-u-1-1">
-            <h2>Scatter Plot: Average Taxable Income vs Net Tax Paid</h2>
-            <div id="vis2" class="vis-container"></div>
-        </div>
-    </div>
-
-    <!-- Third Visualisation: Map Comparison (NSW vs VIC) -->
-    <div class="pure-g">
+    <!-- First Visualisation: Maps (NSW vs VIC) -->
+    <div class="pure-g centered">
         <div class="pure-u-1-1">
             <h2>NSW vs VIC Wealth Distribution Maps</h2>
             <div id="vis3" class="vis-container"></div>
         </div>
     </div>
 
+    <!-- Second Visualisation: Bar Chart and Scatter Plot side by side -->
+    <div class="pure-g visualizations-side-by-side centered">
+        <div class="pure-u-1-2">
+            <h2>Bar Chart: Average Salary vs Superannuation</h2>
+            <div id="vis1" class="vis-container"></div>
+        </div>
+
+        <div class="pure-u-1-2">
+            <h2>Scatter Plot: Average Taxable Income vs Net Tax Paid</h2>
+            <div id="vis2" class="vis-container"></div>
+        </div>
+    </div>
+
+    <!-- Third Visualisation: Richest Postcodes Bar Chart -->
+    <div class="pure-g centered">
+        <div class="pure-u-1-1">
+            <h2>Comparison of Median Net Rent vs Average Salary for Richest Postcodes</h2>
+            <div id="vis4" class="vis-container"></div>
+        </div>
+    </div>
+
     <footer>
-        <p>&copy; 2024 Shaheer Rizwan - Student ID: 33140456</p>
+        <p>&copy; 2024 Shaheer Rizwan - Student ID: <span class="highlight">33140456</span></p>
     </footer>
 
     <!-- Vega-Lite Embeds -->
     <script type="text/javascript">
-        // Embed Bar Chart (Richest Postcodes)
-        vegaEmbed('#vis1', 'bar2_richest_areas_rent_salary_tax.vl.json').catch(console.error);
+        // Embed Map Comparison (NSW vs VIC)
+        vegaEmbed('#vis3', 'map_vic_vs_nsw.vl.json').catch(console.error);
+
+        // Embed Bar Chart (Average Salary vs Superannuation)
+        vegaEmbed('#vis1', 'bar_chart_averagesalary_super.vl.json').catch(console.error);
 
         // Embed Scatter Plot
         vegaEmbed('#vis2', 'scatter_avincome_nettax.vl.json').catch(console.error);
 
-        // Embed Map Comparison (NSW vs VIC)
-        vegaEmbed('#vis3', 'map_vic_vs_nsw.vl.json').catch(console.error);
+        // Embed Richest Postcodes Bar Chart
+        vegaEmbed('#vis4', 'bar2_richest_areas_rent_salary_tax.vl.json').catch(console.error);
     </script>
 
 </body>
