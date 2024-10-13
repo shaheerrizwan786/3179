@@ -1,55 +1,101 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "width": 700,
-  "height": 350,
+  "title": {
+    "text": "State-by-State Salary vs Superannuation Balance",
+    "subtitle": "Comparison of Average Salary and Superannuation Balance across Australian States",
+    "fontSize": 18,
+    "subtitleFontSize": 14,
+    "anchor": "middle",
+    "color": "#333333",
+    "subtitleColor": "#666666"
+  },
+  "width": 800,
+  "height": 400,
   "data": {
-    "url": "https://raw.githubusercontent.com/shaheerrizwan786/3179/refs/heads/main/ts22datacleaned.csv",
+    "url": "https://raw.githubusercontent.com/shaheerrizwan786/3179/main/ts22datasummary.csv",
     "format": {"type": "csv"}
   },
   "transform": [
     {
-      "calculate": "(substring(datum.Postcode, 0, 1) == '2' && datum.Postcode >= 2600 && datum.Postcode <= 2920) ? 'ACT' : (substring(datum.Postcode, 0, 1) == '2' ? 'Sydney' : 'Melbourne')",
-      "as": "City"
-    },
-    {
-      "filter": "(substring(datum.Postcode, 0, 1) == '2' || substring(datum.Postcode, 0, 1) == '3')"
-    },
-    {
       "fold": [
-        "Average salary or wages",
-        "Average super total accounts balance"
+        "Average of Average salary or wages",
+        "Average of Average super total accounts balance"
       ],
       "as": ["Metric", "Value"]
+    },
+    {
+      "calculate": "datum.State == 'New South Wales' ? 'NSW' : datum.State == 'Victoria' ? 'VIC' : datum.State == 'Queensland' ? 'QLD' : datum.State == 'South Australia' ? 'SA' : datum.State == 'Western Australia' ? 'WA' : datum.State == 'Tasmania' ? 'TAS' : datum.State == 'Northern Territory' ? 'NT' : datum.State == 'Australia Capital Territory' ? 'ACT' : datum.State",
+      "as": "StateAcronym"
+    },
+    {"filter": "datum.State != 'Grand Total' && datum.State != 'Unknown'"},
+    {
+      "calculate": "datum.Metric == 'Average of Average salary or wages' ? 'Average Salary' : 'Average Super Balance'",
+      "as": "MetricLabel"
+    },
+    {
+      "calculate": "datum['Average of Average super total accounts balance'] - datum['Average of Average salary or wages']",
+      "as": "Difference"
     }
   ],
-  "mark": "bar",
-  "encoding": {
-    "x": {
-      "field": "Metric",
-      "type": "nominal",
-      "axis": {"title": "Metric", "labelAngle": 0}
+  "layer": [
+    {
+      "mark": {"type": "line", "interpolate": "monotone", "color": "#cccccc"},
+      "encoding": {
+        "x": {"field": "StateAcronym", "type": "nominal"},
+        "y": {"field": "Value", "type": "quantitative"},
+        "detail": {"field": "StateAcronym"},
+        "order": {"field": "MetricLabel"}
+      }
     },
-    "y": {"field": "Value", "type": "quantitative", "axis": {"title": "Value"}},
-    "color": {
-      "field": "City",
-      "type": "nominal",
-      "scale": {"range": ["#fdd835", "#673ab7", "#ff7043"]},
-      "legend": {"title": "City"}
-    },
-    "xOffset": {"field": "City"},
-    "tooltip": [
-      {"field": "City", "title": "City"},
-      {"field": "Metric", "title": "Metric"},
-      {"field": "Value", "title": "Value"}
-    ]
-  },
-  "title": {
-    "text": "Comparison of Average Salary and Superannuation Balance across Sydney, Melbourne, and ACT",
-    "fontSize": 15,
-    "anchor": "start"
-  },
+    {
+      "mark": {"type": "point", "filled": true, "size": 100, "opacity": 0.8},
+      "encoding": {
+        "x": {
+          "field": "StateAcronym",
+          "type": "nominal",
+          "title": "State",
+          "axis": {"labelAngle": 0, "labelFontSize": 12, "titleFontSize": 14}
+        },
+        "y": {
+          "field": "Value",
+          "type": "quantitative",
+          "title": "Average Amount (AUD)",
+          "scale": {"zero": false}
+        },
+        "color": {
+          "field": "MetricLabel",
+          "type": "nominal",
+          "scale": {
+            "domain": ["Average Salary", "Average Super Balance"],
+            "range": ["#5B84B1FF", "#FC766AFF"]
+          },
+          "title": "Metric",
+          "legend": {
+            "orient": "top-right",
+            "labelFontSize": 12,
+            "titleFontSize": 14
+          }
+        },
+        "tooltip": [
+          {"field": "StateAcronym", "title": "State"},
+          {"field": "MetricLabel", "title": "Metric"},
+          {"field": "Value", "title": "Amount", "format": "$,.2f"},
+          {
+            "field": "Difference",
+            "title": "Difference (Super - Salary)",
+            "format": "$,.2f"
+          }
+        ]
+      }
+    }
+  ],
   "config": {
-    "axisX": {"labelFontSize": 12, "titleFontSize": 14},
-    "axisY": {"labelFontSize": 12, "titleFontSize": 14}
+    "axis": {
+      "labelFontSize": 12,
+      "titleFontSize": 14,
+      "titleFontWeight": "bold",
+      "titleColor": "#333333"
+    },
+    "legend": {"labelFontSize": 14, "titleFontSize": 16, "symbolSize": 150}
   }
 }
