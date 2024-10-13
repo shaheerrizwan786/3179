@@ -1,64 +1,71 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "width": 350,
+  "width": 400,
   "height": 300,
   "data": {
     "url": "https://raw.githubusercontent.com/shaheerrizwan786/3179/refs/heads/main/ts22datacleaned.csv",
     "format": {"type": "csv"}
   },
   "transform": [
-    {
-      "calculate": "(substring(datum.Postcode, 0, 1) == '2' && datum.Postcode >= 2600 && datum.Postcode <= 2920) ? 'ACT' : (substring(datum.Postcode, 0, 1) == '2' ? 'Sydney' : 'Melbourne')",
-      "as": "City"
-    },
-    {"filter": "datum['Average taxable income or loss'] >= 70000"}
+    {"filter": "stateFilter == 'All' || datum.State == stateFilter"}
   ],
-  "mark": {"type": "point", "size": 80, "opacity": 0.7},
+  "params": [
+    {
+      "name": "stateFilter",
+      "value": "All",
+      "bind": {
+        "input": "select",
+        "options": ["All", "ACT", "NSW", "NT", "QLD", "SA", "TAS", "VIC", "WA"],
+        "name": "Select State: "
+      }
+    }
+  ],
+  "mark": {"type": "point", "size": 80, "opacity": 0.8},
   "encoding": {
     "x": {
       "field": "Average taxable income or loss",
       "type": "quantitative",
       "axis": {
-        "title": "Average Taxable Income",
+        "title": "Average Taxable Income (AUD)",
         "grid": true,
         "labelFontSize": 12,
         "titleFontSize": 14
-      },
-      "scale": {"domain": [60000, 360000]}
+      }
     },
     "y": {
       "field": "Average net tax",
       "type": "quantitative",
       "axis": {
-        "title": "Net Tax Paid (Average)",
+        "title": "Net Tax Paid (Average) (AUD)",
         "grid": true,
         "labelFontSize": 12,
         "titleFontSize": 14
       }
     },
     "color": {
-      "field": "City",
+      "field": "State",
       "type": "nominal",
-      "scale": {"range": ["#fdd835", "#673ab7", "#ff7043"]},
-      "legend": {"title": "City"}
+      "legend": {"title": "State"}
     },
     "tooltip": [
       {"field": "Postcode", "title": "Postcode"},
-      {"field": "City", "title": "City"},
+      {"field": "State", "title": "State"},
       {
         "field": "Average taxable income or loss",
-        "title": "Average Taxable Income"
+        "title": "Average Taxable Income",
+        "format": "$,.2f"
       },
-      {"field": "Average net tax", "title": "Net Tax Paid (Average)"}
+      {
+        "field": "Average net tax",
+        "title": "Net Tax Paid (Average)",
+        "format": "$,.2f"
+      }
     ]
   },
   "title": {
-    "text": "Scatter Plot: Average Taxable Income vs. Net Tax Paid",
+    "text": "Suburbs by Average Taxable Income within Each State",
     "fontSize": 15,
     "anchor": "start"
   },
-  "config": {
-    "axisX": {"labelFontSize": 12, "titleFontSize": 14},
-    "axisY": {"labelFontSize": 12, "titleFontSize": 14}
-  }
+  "config": {}
 }
