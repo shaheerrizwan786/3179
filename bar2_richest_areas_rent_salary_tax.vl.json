@@ -1,82 +1,134 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "width": 900,
+  "width": 400,
   "height": 400,
   "data": {
     "url": "https://raw.githubusercontent.com/shaheerrizwan786/3179/refs/heads/main/ts22datacleaned.csv",
     "format": {"type": "csv"}
   },
   "transform": [
+    {"filter": "datum['Average taxable income or loss'] > 200000"},
     {
-      "filter": "datum.Postcode == 2028 || datum.Postcode == 2027 || datum.Postcode == 3142 || datum.Postcode == 3944 || datum.Postcode == 2024 || datum.Postcode == 3002 || datum.Postcode == 3186 || datum.Postcode == 2088"
+      "window": [{"op": "rank", "as": "rank"}],
+      "sort": [
+        {"field": "Average taxable income or loss", "order": "descending"}
+      ]
+    },
+    {"filter": "datum.rank <= 8"},
+    {
+      "calculate": "datum['Average taxable income or loss'] / 1000",
+      "as": "Income (K)"
+    },
+    {"calculate": "datum['Average net tax'] / 1000", "as": "Net Tax (K)"},
+    {"calculate": "datum['Average net rent'] / 1000", "as": "Net Rent (K)"}
+  ],
+  "encoding": {
+    "theta": {"field": "Postcode", "type": "nominal", "stack": true}
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "arc",
+        "innerRadius": 80,
+        "stroke": "white",
+        "strokeWidth": 1.5
+      },
+      "encoding": {
+        "radius": {
+          "field": "Income (K)",
+          "type": "quantitative",
+          "scale": {"type": "sqrt", "rangeMin": 100, "rangeMax": 180},
+          "axis": {"title": "Avg Taxable Income (K)"}
+        },
+        "color": {"value": "#4CAF50"},
+        "tooltip": [
+          {"field": "Postcode", "title": "Postcode"},
+          {"field": "State", "title": "State"},
+          {
+            "field": "Income (K)",
+            "title": "Avg Taxable Income (K)",
+            "format": "$,.2f"
+          },
+          {
+            "field": "Net Tax (K)",
+            "title": "Avg Net Tax (K)",
+            "format": "$,.2f"
+          },
+          {
+            "field": "Net Rent (K)",
+            "title": "Avg Net Rent (K)",
+            "format": "$,.2f"
+          }
+        ]
+      }
     },
     {
-      "calculate": "datum['Average salary or wages'] / 52",
-      "as": "Weekly Average Salary"
+      "mark": {
+        "type": "arc",
+        "innerRadius": 130,
+        "stroke": "white",
+        "strokeWidth": 1.5
+      },
+      "encoding": {
+        "radius": {
+          "field": "Net Tax (K)",
+          "type": "quantitative",
+          "scale": {"type": "sqrt", "rangeMin": 110, "rangeMax": 200},
+          "axis": {"title": "Avg Net Tax (K)"}
+        },
+        "color": {"value": "#FF5722"},
+        "tooltip": [
+          {"field": "Postcode", "title": "Postcode"},
+          {"field": "State", "title": "State"},
+          {
+            "field": "Net Tax (K)",
+            "title": "Avg Net Tax (K)",
+            "format": "$,.2f"
+          }
+        ]
+      }
     },
     {
-      "calculate": "datum['Average net tax'] / 52",
-      "as": "Weekly Average Net Tax"
-    },
-    {
-      "fold": [
-        "Weekly Average Salary",
-        "Weekly Average Net Tax",
-        "Median net rent"
-      ],
-      "as": ["Metric", "Value"]
+      "mark": {
+        "type": "arc",
+        "innerRadius": 180,
+        "stroke": "white",
+        "strokeWidth": 1.5
+      },
+      "encoding": {
+        "radius": {
+          "field": "Net Rent (K)",
+          "type": "quantitative",
+          "scale": {"type": "sqrt", "rangeMin": 130, "rangeMax": 220},
+          "axis": {"title": "Avg Net Rent (K)"}
+        },
+        "color": {"value": "#FFEB3B"},
+        "tooltip": [
+          {"field": "Postcode", "title": "Postcode"},
+          {"field": "State", "title": "State"},
+          {
+            "field": "Net Rent (K)",
+            "title": "Avg Net Rent (K)",
+            "format": "$,.2f"
+          }
+        ]
+      }
     }
   ],
-  "mark": "bar",
-  "encoding": {
-    "x": {
-      "field": "Postcode",
-      "type": "nominal",
-      "axis": {
-        "title": "Postcode",
-        "labelAngle": 0,
-        "labelFontSize": 12,
-        "titleFontSize": 14
-      }
-    },
-    "xOffset": {"field": "Metric"},
-    "y": {
-      "field": "Value",
-      "type": "quantitative",
-      "axis": {
-        "title": "Weekly Value",
-        "labelFontSize": 12,
-        "titleFontSize": 14
-      }
-    },
-    "color": {
-      "field": "Metric",
-      "type": "nominal",
-      "scale": {"range": ["#4CAF50", "#FF5722", "#FFEB3B"]},
-      "legend": {"title": "Metric"}
-    },
-    "tooltip": [
-      {"field": "Postcode", "title": "Postcode"},
-      {
-        "field": "Weekly Average Salary",
-        "title": "Weekly Salary ($)",
-        "format": ".2f"
-      },
-      {
-        "field": "Weekly Average Net Tax",
-        "title": "Weekly Tax ($)",
-        "format": ".2f"
-      },
-      {"field": "Median net rent", "title": "Weekly Rent ($)", "format": ".2f"}
-    ]
+  "config": {
+    "view": {"stroke": "transparent"},
+    "legend": {
+      "title": "Metrics",
+      "titleFontSize": 12,
+      "labelFontSize": 10,
+      "orient": "bottom",
+      "symbolType": "circle",
+      "symbolSize": 100
+    }
   },
   "title": {
-    "text": "Comparison of Weekly Salary, Net Tax, and Rent for Richest Postcodes",
-    "fontSize": 15,
-    "anchor": "start"
-  },
-  "config": {
-    "axisX": {"labelFontSize": 12, "titleFontSize": 14},
-    "axisY": {"labelFontSize": 12, "titleFontSize": 14}
+    "text": "Top 8 Postcodes by Avg Taxable Income: Income, Net Tax, and Net Rent",
+    "fontSize": 16,
+    "anchor": "middle"
   }
 }
