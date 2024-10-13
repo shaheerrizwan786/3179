@@ -11,8 +11,8 @@
     <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
 
-    <!-- Import PureCSS for lightweight styling -->
-    <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/pure-min.css" integrity="sha384-cg6SkqEOCV1NbJoCu11+bm0NvBRc8IYLRGXkmNrqUBfTjmMYwNKPWBTIKyw9mHNJ" crossorigin="anonymous">
+    <!-- Bootstrap CSS for styling -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
@@ -21,101 +21,145 @@
     <style>
         body {
             font-family: 'Montserrat', Arial, sans-serif;
-            padding: 20px;
-            background-color: #f4f4f4;
+            background-color: #f8f9fa;
             color: #333;
         }
 
-        h1 {
+        h1, h2 {
             text-align: center;
-            color: #222;
-            font-size: 2.5rem;
-        }
-
-        h2 {
-            font-size: 1.75rem;
-            color: #555;
-            text-align: center;
+            color: #343a40;
+            margin-top: 30px;
         }
 
         .subtitle {
             text-align: center;
             color: #555;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
 
-        .pure-g {
-            margin: 30px 0;
+        .container {
+            margin-top: 20px;
+            padding-bottom: 40px;
         }
 
         .vis-container {
-            margin: 0 auto;
+            margin: 20px 0;
             padding: 20px;
             background-color: #ffffff;
             border-radius: 8px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-            max-width: 95%;
-        }
-
-        /* Layout for side-by-side graphs */
-        .visualizations-side-by-side {
-            display: flex;
-            justify-content: center;
-        }
-
-        .visualizations-side-by-side .vis-container {
-            width: 48%;
-        }
-
-        .centered {
-            text-align: center;
         }
 
         footer {
             text-align: center;
             margin-top: 50px;
-            color: #777;
+            padding: 20px;
+            background-color: #343a40;
+            color: #fff;
         }
 
         .highlight {
             color: #ff7043;
             font-weight: bold;
         }
+
+        .section-text {
+            margin: 10px 0 20px;
+        }
+
+        /* Colors for visual consistency */
+        .text-primary { color: #4CAF50; }
+        .text-secondary { color: #FF5722; }
+        .text-info { color: #FFEB3B; }
+
+        /* Flex alignment for bottom sections */
+        .flex-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .text-column {
+            flex: 1;
+            min-width: 300px;
+            padding: 30px;
+            text-align: left;
+        }
+
+        .graph-column {
+            flex: 1;
+            min-width: 300px;
+            text-align: center;
+        }
+
+        .centered-text {
+            text-align: center;
+
+            
+        }
+        #vis3-container {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* Controls the gap between text and graph */
+        }
+
+        #vis3-container .graph-column {
+            flex: 1;
+            margin-right: 15px; /* Adjust this value for the desired spacing */
+        }
+
+        #vis3-container .text-column {
+            flex: 1;
+            margin-left: 15px; /* Adjust this value for the desired spacing */
+        }
     </style>
 </head>
 
 <body>
 
-    <h1>NSW vs VIC: Who is the Richest?</h1>
-    <h2 class="subtitle">Shaheer Rizwan (33140456)</h2>
+    <div class="container">
+        <h1>NSW vs VIC: Who is the Richest?</h1>
+        <h2 class="subtitle">Shaheer Rizwan (33140456)</h2>
 
-    <!-- First Visualisation: Maps (NSW vs VIC) -->
-    <div class="pure-g centered">
-        <div class="pure-u-1-1">
+        <!-- First Visualisation: Maps (NSW vs VIC) -->
+        <div class="vis-container mx-auto centered">
             <h2>NSW vs VIC Wealth Distribution Maps</h2>
-            <div id="vis3" class="vis-container"></div>
+            <p class="section-text">This map visualisation shows wealth distribution across Australia, highlighting states with the highest average taxable incomes. New South Wales and Victoria emerge as the wealthiest states, with concentrated wealth around major urban centres, particularly in Sydney and Melbourne. Queensland and Western Australia also show notable income clusters, though wealth is less centralised compared to NSW and VIC.</p>
+            <div id="vis3"></div>
         </div>
-    </div>
 
-    <!-- Second Visualisation: Bar Chart and Scatter Plot side by side -->
-    <div class="pure-g visualizations-side-by-side centered">
-        <div class="pure-u-1-2">
+        <!-- Second Visualisation: Bar Chart (Average Salary vs Superannuation) -->
+        <div class="vis-container mx-auto centered">
             <h2>Bar Chart: Average Salary vs Superannuation</h2>
-            <div id="vis1" class="vis-container"></div>
+            <p class="section-text">This bar chart examines the relationship between average salary and superannuation balances across regions in VIC and NSW. High-income regions, predictably, have greater super balances, suggesting a direct relationship between income and retirement savings. Outliers like Melbourne's inner suburbs have lower super balances relative to income, indicating potential lifestyle expenditure affecting long-term savings.</p>
+            <div id="vis1"></div>
         </div>
 
-        <div class="pure-u-1-2">
-            <h2>Scatter Plot: Average Taxable Income vs Net Tax Paid</h2>
-            <div id="vis2" class="vis-container"></div>
-        </div>
-    </div>
+        <!-- Third Visualisation: Scatter Plot (side by side) -->
+        <div id="vis3-container" class="vis-container">
+            <div class="graph-column">
+                <div id="vis2"></div>
+            </div>
+            <div class="text-column">
+                <h2>Scatter Plot: Average Taxable Income vs Net Tax Paid</h2>
+                <p>The scatter plot shows the relationship between average taxable income and net tax paid across various postcodes. Higher-income regions contribute proportionally more in tax. However, regions such as those in Sydney's north shore contribute notably more, suggesting that tax contributions scale with income but vary by postcode due to factors like deductions and net tax adjustments.</p>
+            </div>
 
-    <!-- Third Visualisation: Richest Postcodes Bar Chart -->
-    <div class="pure-g centered">
-        <div class="pure-u-1-1">
-            <h2>Comparison of Median Net Rent vs Average Salary for Richest Postcodes</h2>
-            <div id="vis4" class="vis-container"></div>
         </div>
+
+        <!-- Fourth Visualisation: Richest Postcodes Comparison (side by side) -->
+        <div class="vis-container flex-row">
+            <div class="text-column">
+                <h2>Top 8 Wealthiest Postcodes: Salary, Rent, and Tax Comparison</h2>
+                <p>Focusing on Australia’s top eight wealthiest postcodes, this radial visualization compares average salary, net rent, and net tax. High-rent suburbs like Double Bay show a significant portion of income going toward rent, revealing the financial burden even affluent households face. Tax contributions vary significantly between these postcodes, with wealthier areas showing a greater tax-to-salary ratio.</p>
+            </div>
+            <div class="graph-column">
+                <div id="vis4"></div>
+            </div>
+        </div>
+
     </div>
 
     <footer>
@@ -133,7 +177,7 @@
         // Embed Scatter Plot
         vegaEmbed('#vis2', 'scatter_avincome_nettax.vl.json').catch(console.error);
 
-        // Embed Richest Postcodes Bar Chart
+        // Embed Richest Postcodes Comparison Chart
         vegaEmbed('#vis4', 'bar2_richest_areas_rent_salary_tax.vl.json').catch(console.error);
     </script>
 
